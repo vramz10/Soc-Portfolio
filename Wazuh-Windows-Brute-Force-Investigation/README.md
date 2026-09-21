@@ -52,6 +52,11 @@ The events were first verified directly through Windows Security logs using Powe
 
 This established that the endpoint itself was successfully recording the authentication activity before investigating the SIEM.
 
+### Windows Event Evidence
+
+The Windows Security log recorded multiple Event ID 4625 authentication failures within a short period.
+
+![Windows Event ID 4625 authentication failures](Windows 4625 logon failure events.png)
 ---
 
 ## Phase 2 - Wazuh Detection
@@ -65,6 +70,13 @@ Individual authentication failures generated:
 **Description:** Logon Failure - Unknown user or bad password
 
 Multiple Rule 60122 alerts confirmed that Wazuh was successfully receiving and analyzing Windows Event ID 4625.
+
+### Individual Authentication Alerts
+
+Wazuh successfully ingested the Windows authentication telemetry and generated individual Rule 60122 alerts for the failed logon attempts.
+
+![Wazuh Rule 60122 authentication alerts](08-wazuh-multiple-failed-logins.png)
+
 
 ---
 
@@ -101,6 +113,14 @@ After the configured threshold was reached, Wazuh generated:
 **Description:** Multiple Windows Logon Failures  
 **Frequency:** 8
 
+
+### Correlated Detection
+
+After the correlation threshold was reached, Wazuh generated a Level 10 alert for multiple Windows logon failures.
+
+![Wazuh Rule 60204 multiple logon failures](Level 10 Logon Failure alert Wazuh.png)
+
+
 The underlying Windows telemetry showed:
 
 - Event ID: 4625
@@ -112,6 +132,13 @@ The underlying Windows telemetry showed:
 
 Logon Type 2 indicated an interactive logon, while the loopback address `127.0.0.1` indicated that the activity originated locally on the endpoint.
 
+
+### Event Investigation
+
+Reviewing the underlying event confirmed that the authentication failures targeted the dedicated `SOC-Test` account and were recorded as Windows Security Event ID 4625.
+
+![Wazuh authentication event details](Wazuh Event details on Logon failures.png)
+
 ---
 
 ## MITRE ATT&CK Mapping
@@ -120,6 +147,15 @@ Wazuh mapped the correlated activity to:
 
 **Technique:** T1110 - Brute Force  
 **Tactic:** Credential Access
+
+### Detection Rule and MITRE Mapping
+
+The correlated alert was assigned Wazuh Rule 60204 at Level 10 with a frequency of 8. Wazuh mapped the activity to MITRE ATT&CK T1110 (Brute Force) under the Credential Access tactic.
+
+![Wazuh MITRE ATT&CK T1110 mapping](wazuh rule.png)
+
+
+
 
 The behavior demonstrated how repeated authentication failures can be correlated by a SIEM into a higher-severity security detection.
 
