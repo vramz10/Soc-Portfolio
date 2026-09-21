@@ -56,7 +56,7 @@ This established that the endpoint itself was successfully recording the authent
 
 The Windows Security log recorded multiple Event ID 4625 authentication failures within a short period.
 
-![Windows Event ID 4625 authentication failures](Windows 4625 logon failure events.png)
+![Windows Event ID 4625 authentication failures](screenshots/Windows%204625%20logon%20failure%20events.png) 
 ---
 
 ## Phase 2 - Wazuh Detection
@@ -75,7 +75,7 @@ Multiple Rule 60122 alerts confirmed that Wazuh was successfully receiving and a
 
 Wazuh successfully ingested the Windows authentication telemetry and generated individual Rule 60122 alerts for the failed logon attempts.
 
-![Wazuh Rule 60122 authentication alerts](08-wazuh-multiple-failed-logins.png)
+![Wazuh Rule 60122 authentication alerts](screenshots/08-wazuh-multiple-failed-logins.png) 
 
 
 ---
@@ -118,7 +118,7 @@ After the configured threshold was reached, Wazuh generated:
 
 After the correlation threshold was reached, Wazuh generated a Level 10 alert for multiple Windows logon failures.
 
-![Wazuh Rule 60204 multiple logon failures](Level 10 Logon Failure alert Wazuh.png)
+![Wazuh Rule 60204 multiple logon failures](screenshots/Level%2010%20Logon%20Failure%20alert%20Wazuh.png) 
 
 
 The underlying Windows telemetry showed:
@@ -137,7 +137,7 @@ Logon Type 2 indicated an interactive logon, while the loopback address `127.0.0
 
 Reviewing the underlying event confirmed that the authentication failures targeted the dedicated `SOC-Test` account and were recorded as Windows Security Event ID 4625.
 
-![Wazuh authentication event details](Wazuh Event details on Logon failures.png)
+![Wazuh authentication event details](screenshots/Wazuh%20Event%20details%20on%20Logon%20failures%20.png) 
 
 ---
 
@@ -152,7 +152,7 @@ Wazuh mapped the correlated activity to:
 
 The correlated alert was assigned Wazuh Rule 60204 at Level 10 with a frequency of 8. Wazuh mapped the activity to MITRE ATT&CK T1110 (Brute Force) under the Credential Access tactic.
 
-![Wazuh MITRE ATT&CK T1110 mapping](wazuh rule.png)
+![Wazuh MITRE ATT&CK T1110 mapping](screenshots/wazuh%20rule%20.png) 
 
 
 
